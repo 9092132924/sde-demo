@@ -8,10 +8,10 @@
 		<version>2.4.0</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.javachinna</groupId>
+	<groupId>com.sde</groupId>
 	<artifactId>demo</artifactId>
 	<version>1.1.0</version>
-	<name>demo</name>
+	<name>Sde demo</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
@@ -62,6 +62,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
+		</dependency>
+		
+		<!-- spring mail configuration -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 	</dependencies>
 	<build>
