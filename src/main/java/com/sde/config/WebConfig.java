@@ -12,11 +12,15 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
+/**
+ * @author Dastagiri Varada
+ * @since 26/12/2020
+ */
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-	private final long MAX_AGE_SECS = 3600;
+	private static final long MAX_AGE_SECS = 3600;
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {

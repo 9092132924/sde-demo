@@ -16,8 +16,8 @@ import com.sde.exception.UserAlreadyExistAuthenticationException;
 import com.sde.model.User;
 
 /**
- * @author Chinna
- * @since 26/3/18
+ * @author Dastagiri Varada
+ * @since 26/12/2020
  */
 public interface UserService {
 
@@ -28,17 +28,15 @@ public interface UserService {
 	Optional<User> findUserById(Long id);
 
 	UserDetails loadUserByUsername(String email) throws UsernameNotFoundException;
+
 	public ApiResponse validateUser(String confirmationToken);
 
 	public void sendConfirmMail(LoginRequest loginRequest);
 
+	public ResponseEntity<ApiResponse> resetPassword(String token, String password);
 
-	public ResponseEntity<?> resetPassword(String token, String password);
+	public ResponseEntity<Object> createjwtAndSignin(@Valid LoginRequest loginRequest);
 
-	public ResponseEntity<?> createjwtAndSignin(@Valid LoginRequest loginRequest);
-
-	public ResponseEntity<?> getCurrentUser(User user);
-
-	public ResponseEntity<?> changePassword(PasswordReset changeRequest);
+	public ResponseEntity<ApiResponse> changePassword(PasswordReset changeRequest);
 
 }

@@ -19,35 +19,40 @@ import com.sde.dto.SignUpRequest;
 import com.sde.exception.UserAlreadyExistAuthenticationException;
 import com.sde.service.UserService;
 
+
+/**
+ * @author Dastagiri Varada
+ * @since 26/12/2020
+ */
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-
 
 	@Autowired
 	UserService userService;
 
 	@PostMapping("/signin")
-	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) throws Exception {
+	public ResponseEntity<Object> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
 		return userService.createjwtAndSignin(loginRequest);
 	}
 
 	@PostMapping("/signup")
-	public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
+	public ResponseEntity<ApiResponse> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
 		try {
 			userService.registerNewUser(signUpRequest);
 		} catch (UserAlreadyExistAuthenticationException e) {
 			return new ResponseEntity<>(new ApiResponse(false, "Email Address already in use!"),
 					HttpStatus.BAD_REQUEST);
 		}
-		
+
 		return ResponseEntity.ok().body(new ApiResponse(true,
 				"verification mail has been sent to " + signUpRequest.getEmail() + ". please confirm"));
 	}
 
 	@GetMapping(value = "/confirm-account")
-	public ResponseEntity<?> confirmUserAccount(HttpServletResponse httpServletRespons,
+	public ResponseEntity<ApiResponse> confirmUserAccount(HttpServletResponse httpServletRespons,
 			@RequestParam("confirm-token") String confirmationToken) {
 		ApiResponse response = userService.validateUser(confirmationToken);
 		return ResponseEntity.ok().body(response);

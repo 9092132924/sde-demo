@@ -26,7 +26,11 @@ import lombok.Setter;
 /**
  * The persistent class for the user database table.
  * 
+
+ * @author Dastagiri Varada
+ * @since 26/12/2020
  */
+
 @Entity
 @NoArgsConstructor
 @Getter
@@ -53,7 +57,7 @@ public class User implements Serializable {
 	protected String forgotPwdToken;
 
 
-    private String Name;
+	private String name;
 
     
 	private String password;

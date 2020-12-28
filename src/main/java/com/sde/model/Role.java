@@ -15,6 +15,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
+ * /**
+ * @author Dastagiri Varada
+ * @since 26/12/2020
  * The persistent class for the role database table.
  * 
  */
@@ -54,19 +57,6 @@ public class Role implements Serializable {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		final Role role = (Role) obj;
-		if (!role.equals(role.name)) {
-			return false;
-		}
 		return true;
 	}
 

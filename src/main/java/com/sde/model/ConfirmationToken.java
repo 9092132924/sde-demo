@@ -16,21 +16,27 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+
+/**
+ * @author Dastagiri Varada
+ * @since 26/12/2020
+ */
+
 @Entity
 public class ConfirmationToken {
-	
-	private static final int EXPIRATION =60 * 24;
+
+	private static final int EXPIRATION = 60 * 24;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="token_id")
+	@Column(name = "token_id")
 	private long tokenid;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date expiryDate;
 
-	@Column(name="confirmation_token")
-	private String confirmationToken;
-	
+	@Column(name = "confirmation_token")
+	private String confirmToken;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdDate;
 
@@ -39,34 +45,33 @@ public class ConfirmationToken {
 	}
 
 	@OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "USER_ID")
-    private User user;
-	
+	@JoinColumn(nullable = false, name = "USER_ID")
+	private User user;
+
 	public ConfirmationToken() {
 	}
-	
+
 	public ConfirmationToken(User user) {
 		this.user = user;
 		createdDate = new Date();
-		confirmationToken = UUID.randomUUID().toString();
-		expiryDate=calculateExpiryDate(EXPIRATION);
+		confirmToken = UUID.randomUUID().toString();
+		expiryDate = calculateExpiryDate(EXPIRATION);
 	}
-	
+
 	private Date calculateExpiryDate(int expiryTimeInMinutes) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Timestamp(cal.getTime().getTime()));
-        cal.add(Calendar.MINUTE,expiryTimeInMinutes );
-        return new Date(cal.getTime().getTime());
-    }
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Timestamp(cal.getTime().getTime()));
+		cal.add(Calendar.MINUTE, expiryTimeInMinutes);
+		return new Date(cal.getTime().getTime());
+	}
 
 	public String getConfirmationToken() {
-		return confirmationToken;
+		return confirmToken;
 	}
 
 	public void setConfirmationToken(String confirmationToken) {
-		this.confirmationToken = confirmationToken;
+		this.confirmToken = confirmationToken;
 	}
-
 
 	public User getUser() {
 		return user;

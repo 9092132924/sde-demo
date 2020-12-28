@@ -18,6 +18,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.sde.security.jwt.TokenAuthenticationFilter;
 import com.sde.service.UserServiceImpl;
 
+/**
+ * @author Dastagiri Varada
+ * @since 26/12/2020
+ */
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -40,8 +45,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().cors().and().authorizeRequests()
-				.antMatchers("/", "/error", "/api/all", "/api/forgot", "/api/reset", "/api/auth/**")
-				.permitAll().anyRequest().authenticated().and().exceptionHandling()
+				.antMatchers("/", "/error", "/api/all", "/api/forgot", "/api/reset", "/api/auth/**").permitAll()
+				.anyRequest().authenticated().and().exceptionHandling()
 				.authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

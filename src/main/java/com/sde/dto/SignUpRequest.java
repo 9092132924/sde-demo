@@ -8,9 +8,10 @@ import com.sde.validator.PasswordMatches;
 import lombok.Data;
 
 /**
- * @author Chinna
- * @since 26/3/18
+ * @author Dastagiri Varada
+ * @since 26/12/2020
  */
+
 @Data
 @PasswordMatches
 public class SignUpRequest {
@@ -57,7 +58,6 @@ public class SignUpRequest {
 			this.name = name;
 			return this;
 		}
-		
 
 		public Builder addEmail(final String email) {
 			this.email = email;
@@ -68,7 +68,6 @@ public class SignUpRequest {
 			this.password = password;
 			return this;
 		}
-
 
 		public SignUpRequest build() {
 			return new SignUpRequest(providerUserID, name, email, password);

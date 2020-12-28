@@ -3,10 +3,10 @@ package com.sde.exception;
 import org.springframework.security.core.AuthenticationException;
 
 /**
- * 
- * @author Chinna
- *
+ * @author Dastagiri Varada
+ * @since 26/12/2020
  */
+
 public class UserAlreadyExistAuthenticationException extends AuthenticationException {
 
     /**

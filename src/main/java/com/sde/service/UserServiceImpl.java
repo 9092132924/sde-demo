@@ -42,6 +42,10 @@ import com.sde.repo.ConfirmationTokenRepository;
 import com.sde.repo.ProfileRepository;
 import com.sde.repo.UserRepository;
 import com.sde.security.jwt.TokenProvider;
+/**
+ * @author Dastagiri Varada
+ * @since 26/12/2020
+ */
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -70,7 +74,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
-	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepository.findByEmail(username);
 		if (user == null) {
@@ -125,7 +128,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		profile.setCreatedDate(now);
 		user.setProfile(profile);
 		user.setPassword(passwordEncoder.encode(formDTO.getPassword()));
-		final HashSet<Role> roles = new HashSet<Role>();
+		final HashSet<Role> roles = new HashSet<>();
 		user.setRoles(roles);
 		return user;
 	}
@@ -145,7 +148,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	public ApiResponse validateUser(String confirmationToken) {
 		ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
 		User user = userRepository.findByEmail(token.getUser().getEmail());
-		if (token != null && token.getExpiryDate().getTime() - Calendar.getInstance().getTime().getTime() > 0) {
+		if (token.getExpiryDate().getTime() - Calendar.getInstance().getTime().getTime() > 0) {
 			user.setAccountVerified(true);
 			userRepository.save(user);
 			return new ApiResponse(true, "Congratulations! Your account has been activated and email is verified!");
@@ -197,7 +200,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
-	public ResponseEntity<?> resetPassword(String token, String password) {
+	public ResponseEntity<ApiResponse> resetPassword(String token, String password) {
 		Optional<User> userOptional = Optional.ofNullable(userRepository.findByForgotPwdToken(token));
 		if (!userOptional.isPresent()) {
 			return ResponseEntity.ok().body(new ApiResponse(false, "invalid reset password url"));
@@ -215,7 +218,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
-	public ResponseEntity<?> createjwtAndSignin(@Valid LoginRequest loginRequest) {
+	public ResponseEntity<Object> createjwtAndSignin(@Valid LoginRequest loginRequest) {
 		if (null != findUserByEmail(loginRequest.getEmail())) {
 			if (findUserByEmail(loginRequest.getEmail()).isAccountVerified()) {
 				try {
@@ -238,13 +241,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		}
 	}
 
-	@Override
-	public ResponseEntity<?> getCurrentUser(User user) {
-		return ResponseEntity.ok().body(profileRepository.findByEmail(user.getEmail()));
-	}
+
 
 	@Override
-	public ResponseEntity<?> changePassword(PasswordReset passwordreset) {
+	public ResponseEntity<ApiResponse> changePassword(PasswordReset passwordreset) {
 		User user = userRepository.findByEmail(passwordreset.getEmail());
 		user.setPassword(passwordEncoder.encode(passwordreset.getPassword()));
 		userRepository.save(user);

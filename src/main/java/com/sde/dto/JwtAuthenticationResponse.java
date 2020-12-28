@@ -6,16 +6,21 @@ import com.sde.model.User;
 
 import lombok.Value;
 
+/**
+ * @author Dastagiri Varada
+ * @since 26/12/2020
+ */
+
 @Value
-public class JwtAuthenticationResponse implements Serializable  {
+public class JwtAuthenticationResponse implements Serializable {
 
 	private static final long serialVersionUID = -8091879091924046844L;
 	private final String jwttoken;
 	private final User user;
 
-	public JwtAuthenticationResponse(String jwttoken,User user) {
+	public JwtAuthenticationResponse(String jwttoken, User user) {
 		this.jwttoken = jwttoken;
-		this.user=user;
+		this.user = user;
 	}
 
 	public String getToken() {

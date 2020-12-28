@@ -7,8 +7,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +19,10 @@ import com.sde.service.UserService;
 
 import io.jsonwebtoken.ExpiredJwtException;
 
+/**
+ * @author Dastagiri Varada
+ * @since 26/12/2020
+ */
 
 @Component
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
@@ -31,10 +33,9 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 	@Autowired
 	private UserService userService;
 
-	private static final Logger logger = LoggerFactory.getLogger(TokenAuthenticationFilter.class);
-
 	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException {
 
 		final String requestTokenHeader = request.getHeader("Authorization");
 
@@ -47,9 +48,9 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 			try {
 				username = tokenProvider.getUsernameFromToken(jwtToken);
 			} catch (IllegalArgumentException e) {
-				System.out.println("Unable to get JWT Token");
+				logger.warn("Unable to get JWT Token");
 			} catch (ExpiredJwtException e) {
-				System.out.println("JWT Token has expired");
+				logger.warn("JWT Token has expired");
 			}
 		} else {
 			logger.warn("JWT Token does not begin with Bearer String");
@@ -62,7 +63,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
 			// if token is valid configure Spring Security to manually set
 			// authentication
-			if (tokenProvider.validateToken(jwtToken, userDetails)) {
+			if (Boolean.TRUE.equals(tokenProvider.validateToken(jwtToken, userDetails))) {
 
 				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
 						userDetails, null, userDetails.getAuthorities());

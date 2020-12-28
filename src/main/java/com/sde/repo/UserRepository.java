@@ -5,6 +5,11 @@ import org.springframework.stereotype.Repository;
 
 import com.sde.model.User;
 
+/**
+ * @author Dastagiri Varada
+ * @since 26/12/2020
+ */
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 

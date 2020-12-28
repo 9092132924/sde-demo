@@ -12,13 +12,19 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author Dastagiri Varada
+ * @since 26/12/2020
+ */
+
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
 	private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationEntryPoint.class);
 
 	@Override
-	public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
+	public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+			AuthenticationException e) throws IOException, ServletException {
 		logger.error("Responding with unauthorized error. Message - {}", e.getMessage());
 		httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getLocalizedMessage());
 	}

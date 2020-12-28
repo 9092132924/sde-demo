@@ -6,6 +6,11 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+/**
+ * @author Dastagiri Varada
+ * @since 26/12/2020
+ */
+
 @Service("emailSenderService")
 public class EmailSenderService {
 

@@ -17,42 +17,44 @@ import com.sde.dto.PasswordReset;
 import com.sde.model.User;
 import com.sde.service.UserService;
 
+
+/**
+ * @author Dastagiri Varada
+ * @since 26/12/2020
+ */
+
 @RestController
 @RequestMapping("/api")
 public class UserController {
-	
+
 	@Autowired
 	UserService userService;
 
-
 	@GetMapping("/all")
-	public ResponseEntity<?> getContent() {
+	public ResponseEntity<Object> getContent() {
 		return ResponseEntity.ok("showing home page details");
 	}
-	
+
 	@PostMapping("/forgot")
-	public ResponseEntity<?> forgotPasssword(@RequestBody LoginRequest loginRequest) {
-		Optional<User> userOptional = Optional
-				.ofNullable(userService.findUserByEmail(loginRequest.getEmail()));
+	public ResponseEntity<Object> forgotPasssword(@RequestBody LoginRequest loginRequest) {
+		Optional<User> userOptional = Optional.ofNullable(userService.findUserByEmail(loginRequest.getEmail()));
 		if (userOptional.isPresent()) {
 			userService.sendConfirmMail(loginRequest);
-			return ResponseEntity.ok().body(new ApiResponse(true, "password reset mail has been sent to "+ loginRequest.getEmail()+". please confirm"));
-		}else
+			return ResponseEntity.ok().body(new ApiResponse(true,
+					"password reset mail has been sent to " + loginRequest.getEmail() + ". please confirm"));
+		} else
 			return ResponseEntity.ok().body(new ApiResponse(false, "Email Address not exists!"));
-		}
-		
-	
+	}
+
 	@PostMapping("/reset")
-	public ResponseEntity<?> resetPasssword(@RequestBody PasswordReset resetRequest,@RequestParam("confirm-token") String token) {
+	public ResponseEntity<ApiResponse> resetPasssword(@RequestBody PasswordReset resetRequest,
+			@RequestParam("confirm-token") String token) {
 		return userService.resetPassword(token, resetRequest.getPassword());
 	}
-	
-	
+
 	@PostMapping("/change")
-	public ResponseEntity<?> changePasssword(@RequestBody PasswordReset changeRequest) {
+	public ResponseEntity<ApiResponse> changePasssword(@RequestBody PasswordReset changeRequest) {
 		return userService.changePassword(changeRequest);
 	}
-	
-
 
 }

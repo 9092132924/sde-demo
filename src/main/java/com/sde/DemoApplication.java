@@ -5,6 +5,10 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+/**
+ * @author Dastagiri Varada
+ * @since 26/12/2020
+ */
 
 @SpringBootApplication(scanBasePackages = "com.sde")
 @EnableJpaRepositories

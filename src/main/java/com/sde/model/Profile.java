@@ -16,6 +16,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
+ * @author Dastagiri Varada
+ * @since 26/12/2020
+
  * The persistent class for the user database table.
  * 
  */
@@ -30,19 +33,16 @@ public class Profile implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "PROFILE_ID")
 	private Long id;
-	
+
 	@Column(unique = true)
 	private String email;
 
 	@Column(name = "created_date", nullable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	protected Date createdDate;
-    private String Name;
-    private int Age;
-    private Long phoneNumber;
-    private String address;
-    
+	private String name;
+	private int age;
+	private Long phoneNumber;
+	private String address;
 
-    
-	
 }
