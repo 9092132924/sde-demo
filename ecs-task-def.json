@@ -1,0 +1,18 @@
+{
+    "family": "login-app-backend",
+    "containerDefinitions": [
+        {
+            "image": "557523153113.dkr.ecr.ap-south-1.amazonaws.com/login-app-backend:latest",
+            "name": "login-app-backend",
+            "cpu": 10,
+            "memory": 256,
+            "essential": true,
+            "portMappings": [
+                {
+                    "containerPort": 8085,
+                    "hostPort": 80
+                }
+            ]	
+        }
+    ]
+}
