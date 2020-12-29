@@ -65,12 +65,12 @@ public class ConfirmationToken {
 		return new Date(cal.getTime().getTime());
 	}
 
-	public String getConfirmationToken() {
+	public String getConfirmToken() {
 		return confirmToken;
 	}
 
-	public void setConfirmationToken(String confirmationToken) {
-		this.confirmToken = confirmationToken;
+	public void setConfirmToken(String confirmToken) {
+		this.confirmToken = confirmToken;
 	}
 
 	public User getUser() {

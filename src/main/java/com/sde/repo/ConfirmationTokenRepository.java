@@ -9,6 +9,6 @@ import com.sde.model.ConfirmationToken;
  * @since 26/12/2020
  */
 
-public interface ConfirmationTokenRepository extends CrudRepository<ConfirmationToken, String> {
-	ConfirmationToken findByConfirmationToken(String confirmationToken);
+public interface ConfirmationTokenRepository extends CrudRepository<ConfirmationToken , String> {
+	ConfirmationToken findByConfirmToken(String confirmToken);
 }

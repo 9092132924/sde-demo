@@ -112,7 +112,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		mailMessage.setSubject("Complete Registration!");
 		mailMessage.setFrom("ramu6214@gmail.com");
 		mailMessage.setText("To confirm your account, please click here : "
-				+ appProperties.getAuth().getConfirmaccount() + confirmationToken.getConfirmationToken());
+				+ appProperties.getAuth().getConfirmaccount() + confirmationToken.getConfirmToken());
 		emailSenderService.sendEmail(mailMessage);
 
 	}
@@ -146,7 +146,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	@Transactional(value = "transactionManager")
 	@Override
 	public ApiResponse validateUser(String confirmationToken) {
-		ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
+		ConfirmationToken token = confirmationTokenRepository.findByConfirmToken(confirmationToken);
 		User user = userRepository.findByEmail(token.getUser().getEmail());
 		if (token.getExpiryDate().getTime() - Calendar.getInstance().getTime().getTime() > 0) {
 			user.setAccountVerified(true);
