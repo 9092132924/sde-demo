@@ -32,7 +32,7 @@ public class UserController {
 
 	@GetMapping("/all")
 	public ResponseEntity<Object> getContent() {
-		return ResponseEntity.ok("hello home page details");
+		return ResponseEntity.ok("hello DISPLAYING home page details");
 	}
 
 	@PostMapping("/forgot")
