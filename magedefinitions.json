@@ -1,0 +1,6 @@
+[
+  {
+    "name": "login-app",
+    "imageUri": "557523153113.dkr.ecr.ap-south-1.amazonaws.com/login-app-backend:latest"
+  }
+]
