@@ -15,18 +15,23 @@ spec:
         containers:
           - name: login-app
             image: 557523153113.dkr.ecr.ap-south-1.amazonaws.com/login-app-backend:latest
+            imagePullPolicy: Always
             ports:
             - containerPort: 8085
+        restartPolicy: Always
         imagePullSecrets:
         - name: ecr-secret
 ---
+#service to expose outside
 apiVersion: v1
 kind: Service
 metadata:
-      name: login-app
+      name: login-app-service
 spec:
     ports:
-      - port: 8085
+      - nodePort: 31000
+        port: 8085
         targetPort: 8085
+    type: NodePort
     selector:
-        name: login-app
+        app: login-app
