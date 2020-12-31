@@ -1,35 +1,32 @@
-apiVersion: v1
-kind: ReplicationController
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-    lables:
-      name: login-app-backend-controller
-    name: login-app
+      name: login-app-deployment
 spec:
     replicas: 1
+    selector:
+      matchLabels:
+        app: login-app
     template:
-     metadata:
+      metadata:
         labels:
-        name: login-app
-    spec:
+          app: login-app
+      spec:
         containers:
-        - image: 557523153113.dkr.ecr.ap-south-1.amazonaws.com/login-app-backend
-          name: login-app
-          ports:
           - name: login-app
-            containerPort: 8085
+            image: 557523153113.dkr.ecr.ap-south-1.amazonaws.com/login-app-backend:latest
+            ports:
+            - containerPort: 8085
+        imagePullSecrets:
+        - name: ecr-secret
 ---
-#service to expose outside
 apiVersion: v1
 kind: Service
 metadata:
-    lables:
       name: login-app
-    name: login-app
 spec:
-    type: NodePort
     ports:
       - port: 8085
         targetPort: 8085
     selector:
         name: login-app
-
