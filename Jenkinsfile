@@ -20,7 +20,7 @@ node {
 	stage("k8-deploy") {
 
 		sshagent(['k8-ssh']) {
-		   sh "scp -o strictHostKeyChecking=no backend-deployment.yml ubuntu@13.233.32.136:/home/ubuntu/"
+		   sh "scp -o strictHostKeyChecking=no backend-deployment.yml ubuntu@13.127.246.55:/home/ubuntu/"
 			script {
 				try {
 				  sh "ssh ubuntu@13.127.246.55 kubectl apply -f ."
