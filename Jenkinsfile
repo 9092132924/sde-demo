@@ -9,7 +9,7 @@ node {
 	}
 	stage("Build Docker images") {
 
-		sh "docker build -t public.ecr.aws/x8h0o9s6/sde-demo-backend ."
+		sh "docker build -t 557523153113.dkr.ecr.ap-south-1.amazonaws.com/login-app-backend ."
 	}
 	stage("docker push") {
 			withDockerRegistry(credentialsId: 'ecr:ap-south-1:AWS-CREDS', url: 'https://557523153113.dkr.ecr.ap-south-1.amazonaws.com/login-app-backend') {
@@ -23,9 +23,9 @@ node {
 		   sh "scp -o strictHostKeyChecking=no backend-deployment.yml ubuntu@13.233.32.136:/home/ubuntu/"
 			script {
 				try {
-				  sh "ssh ubuntu@13.233.32.136 kubectl apply -f ."
+				  sh "ssh ubuntu@13.127.246.55 kubectl apply -f ."
 					} catch (error) {
-		   		sh "ssh ubuntu@13.233.32.136 kubectl create -f ."
+		   		sh "ssh ubuntu@13.127.246.55 kubectl create -f ."
 					}
 			}
 

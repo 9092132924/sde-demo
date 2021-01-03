@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-      name: login-app-deployment
+      name: login-app-backend-deployment
 spec:
     replicas: 1
     selector:
@@ -26,7 +26,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-      name: login-app-service
+      name: login-app-backend-service
 spec:
     ports:
       - nodePort: 31000
