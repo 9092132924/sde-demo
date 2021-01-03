@@ -23,6 +23,7 @@ node {
 		   sh "scp -o strictHostKeyChecking=no backend-deployment.yml ubuntu@13.127.246.55:/home/ubuntu/"
 			script {
 				try {
+				  sh "ssh ubuntu@13.127.246.55 kubectl delete -f ."
 				  sh "ssh ubuntu@13.127.246.55 kubectl apply -f ."
 					} catch (error) {
 		   		sh "ssh ubuntu@13.127.246.55 kubectl create -f ."
