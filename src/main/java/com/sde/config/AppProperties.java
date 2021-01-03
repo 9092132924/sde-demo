@@ -1,7 +1,7 @@
 package com.sde.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 
 /**
@@ -9,12 +9,11 @@ import org.springframework.stereotype.Component;
  * @since 26/12/2020
  */
 
-@Component
+@Configuration
 @ConfigurationProperties(prefix = "app")
 public class AppProperties {
-	private final Auth auth = new Auth();
 
-	public static class Auth {
+
 		public String getTokenSecret() {
 			return tokenSecret;
 		}
@@ -39,12 +38,12 @@ public class AppProperties {
 			this.forwardMailExpiryTime = forwardMailExpiryTime;
 		}
 
-		public String getConfirmaccount() {
-			return confirmaccount;
+		public String getConfirmAccount() {
+			return confirmAccount;
 		}
 
-		public void setConfirmaccount(String confirmaccount) {
-			this.confirmaccount = confirmaccount;
+		public void setconfirmAccount(String confirmAccount) {
+			this.confirmAccount = confirmAccount;
 		}
 
 		public String getForgotaccount() {
@@ -58,12 +57,10 @@ public class AppProperties {
 		private String tokenSecret;
 		private long tokenExpirationMsec;
 		private long forwardMailExpiryTime;
-		private String confirmaccount;
+		private String confirmAccount;
 		private String forgotaccount;
-	}
+	
 
-	public Auth getAuth() {
-		return auth;
-	}
+	
 
 }

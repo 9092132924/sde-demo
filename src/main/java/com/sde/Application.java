@@ -2,9 +2,12 @@ package com.sde;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import com.sde.config.AppProperties;
 /**
  * @author Dastagiri Varada
  * @since 26/12/2020
@@ -13,15 +16,15 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication(scanBasePackages = "com.sde")
 @EnableJpaRepositories
 @EnableTransactionManagement
-public class DemoApplication extends SpringBootServletInitializer {
+public class Application extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
-		SpringApplicationBuilder app = new SpringApplicationBuilder(DemoApplication.class);
+		SpringApplicationBuilder app = new SpringApplicationBuilder(Application.class);
 		app.run();
 	}
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(DemoApplication.class);
+		return application.sources(Application.class);
 	}
 }

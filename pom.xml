@@ -6,17 +6,19 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.0</version>
+		<version>2.1.2.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.sde</groupId>
-	<artifactId>demo</artifactId>
+	<artifactId>login-backend</artifactId>
 	<version>1.1.0</version>
 	<name>Sde demo</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
 		<java.version>8</java.version>
+		 <junit-jupiter.version>5.3.2</junit-jupiter.version>
+        <mockito.version>2.24.0</mockito.version>
 	</properties>
 
 	<dependencies>
@@ -57,6 +59,14 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+  <!-- junit 5 -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -83,6 +93,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
 		</plugins>
 		<finalName>docker-spring-boot-backend</finalName>
 	</build>

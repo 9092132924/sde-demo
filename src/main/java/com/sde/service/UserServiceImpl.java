@@ -49,6 +49,7 @@ import com.sde.security.jwt.TokenProvider;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
+	@Autowired
 	private AppProperties appProperties;
 
 	@Autowired
@@ -69,16 +70,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	@Autowired
 	TokenProvider tokenProvider;
 
-	public UserServiceImpl(AppProperties appProperties) {
-		this.appProperties = appProperties;
-	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepository.findByEmail(username);
-		if (user == null) {
-			throw new UsernameNotFoundException("User not found with username: " + username);
-		}
 		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
 				new ArrayList<>());
 	}
@@ -86,7 +81,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	@Override
 	@Transactional
 	public User registerNewUser(final SignUpRequest signUpRequest) throws UserAlreadyExistAuthenticationException {
-		if (signUpRequest.getUserID() != null && userRepository.existsById(signUpRequest.getUserID())) {
+		if (null!=signUpRequest.getUserID() && userRepository.existsById(signUpRequest.getUserID())) {
 			throw new UserAlreadyExistAuthenticationException(
 					"User with User id " + signUpRequest.getUserID() + " already exist");
 		} else if (userRepository.existsByEmail(signUpRequest.getEmail())) {
@@ -97,10 +92,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		Date now = Calendar.getInstance().getTime();
 		user.setCreatedDate(now);
 		profileRepository.save(user.getProfile());
-		profileRepository.flush();
 		user = userRepository.save(user);
-		userRepository.flush();
 		sendconfirmationMail(user);
+		userRepository.flush();
+		
 		return user;
 	}
 
@@ -112,7 +107,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		mailMessage.setSubject("Complete Registration!");
 		mailMessage.setFrom("ramu6214@gmail.com");
 		mailMessage.setText("To confirm your account, please click here : "
-				+ appProperties.getAuth().getConfirmaccount() + confirmationToken.getConfirmToken());
+				+ appProperties.getConfirmAccount() + confirmationToken.getConfirmToken());
 		emailSenderService.sendEmail(mailMessage);
 
 	}
@@ -134,14 +129,31 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
-	public User findUserByEmail(final String email) {
-		return userRepository.findByEmail(email);
+	public ResponseEntity<Object> createjwtAndSignin(@Valid LoginRequest loginRequest) {
+		User user=findUserByEmail(loginRequest.getEmail());
+		if (null != user ) {
+			if (findUserByEmail(loginRequest.getEmail()).isAccountVerified()) {
+				try {
+					authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),
+							loginRequest.getPassword()));
+				} catch (DisabledException e) {
+					return new ResponseEntity<>(new ApiResponse(false, "User is disabled!"), HttpStatus.BAD_REQUEST);
+				} catch (BadCredentialsException e) {
+					return new ResponseEntity<>(new ApiResponse(false, "invalid user name and password!"),
+							HttpStatus.BAD_REQUEST);
+				}
+				final UserDetails userDetails = loadUserByUsername(loginRequest.getEmail());
+				String jwt = tokenProvider.createToken(userDetails);
+				return ResponseEntity.ok(new JwtAuthenticationResponse(jwt, findUserByEmail(loginRequest.getEmail())));
+			} else {
+				return ResponseEntity.ok().body("user yet to verify email .Plese confirm before login");
+			}
+		} else {
+			return ResponseEntity.ok().body("No account exists with us.Please signup");
+		}
 	}
 
-	@Override
-	public Optional<User> findUserById(Long id) {
-		return userRepository.findById(id);
-	}
+
 
 	@Transactional(value = "transactionManager")
 	@Override
@@ -176,7 +188,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		mailMessage.setSubject("Forgot Password!");
 		mailMessage.setFrom("ramu6214@gmail.com");
 		mailMessage.setText(
-				"To confirm your account, please click here : " + appProperties.getAuth().getForgotaccount() + token);
+				"To confirm your account, please click here : " + appProperties.getForgotaccount() + token);
 		emailSenderService.sendEmail(mailMessage);
 
 	}
@@ -196,7 +208,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 		LocalDateTime now = LocalDateTime.now();
 		Duration diff = Duration.between(tokenCreationDate, now);
-		return diff.toMinutes() >= appProperties.getAuth().getForwardMailExpiryTime();
+		return diff.toMinutes() >= appProperties.getForwardMailExpiryTime();
 	}
 
 	@Override
@@ -217,31 +229,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		return ResponseEntity.ok().body(new ApiResponse(true, "Your password successfully updated"));
 	}
 
-	@Override
-	public ResponseEntity<Object> createjwtAndSignin(@Valid LoginRequest loginRequest) {
-		if (null != findUserByEmail(loginRequest.getEmail())) {
-			if (findUserByEmail(loginRequest.getEmail()).isAccountVerified()) {
-				try {
-					authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),
-							loginRequest.getPassword()));
-				} catch (DisabledException e) {
-					return new ResponseEntity<>(new ApiResponse(false, "User is disabled!"), HttpStatus.BAD_REQUEST);
-				} catch (BadCredentialsException e) {
-					return new ResponseEntity<>(new ApiResponse(false, "invalid user name and password!"),
-							HttpStatus.BAD_REQUEST);
-				}
-				final UserDetails userDetails = loadUserByUsername(loginRequest.getEmail());
-				String jwt = tokenProvider.createToken(userDetails);
-				return ResponseEntity.ok(new JwtAuthenticationResponse(jwt, findUserByEmail(loginRequest.getEmail())));
-			} else {
-				return ResponseEntity.ok().body("user yet to verify email .Plese confirm before login");
-			}
-		} else {
-			return ResponseEntity.ok().body("No account exists with us.Please signup");
-		}
-	}
-
-
 
 	@Override
 	public ResponseEntity<ApiResponse> changePassword(PasswordReset passwordreset) {
@@ -250,5 +237,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		userRepository.save(user);
 		return ResponseEntity.ok().body(new ApiResponse(true, "Your password successfully updated"));
 		
+	}
+
+	@Override
+	public User findUserByEmail(String email) {
+		return userRepository.findByEmail(email);
+	}
+
+	@Override
+	public Optional<User> findUserById(Long id) {
+		return userRepository.findById(id);
 	}
 }

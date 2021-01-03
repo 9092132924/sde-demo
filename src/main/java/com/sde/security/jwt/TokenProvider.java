@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +23,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class TokenProvider {
 
 	public static final long JWT_TOKEN_VALIDITY = 1800;
+	@Autowired
 	private AppProperties appProperties;
-
-	public TokenProvider(AppProperties appProperties) {
-		this.appProperties = appProperties;
-	}
 
 	public String createToken(UserDetails userDetails) {
 		Map<String, Object> claims = new HashMap<>();
@@ -37,7 +35,7 @@ public class TokenProvider {
 
 		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
-				.signWith(SignatureAlgorithm.HS512, appProperties.getAuth().getTokenSecret()).compact();
+				.signWith(SignatureAlgorithm.HS512, appProperties.getTokenSecret()).compact();
 	}
 
 	// validate token
@@ -58,7 +56,7 @@ public class TokenProvider {
 
 	// for retrieveing any information from token we will need the secret key
 	private Claims getAllClaimsFromToken(String token) {
-		return Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(token).getBody();
+		return Jwts.parser().setSigningKey(appProperties.getTokenSecret()).parseClaimsJws(token).getBody();
 	}
 
 	// check if the token has expired
