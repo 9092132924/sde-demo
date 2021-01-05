@@ -17,8 +17,8 @@
 
 	<properties>
 		<java.version>8</java.version>
-		 <junit-jupiter.version>5.3.2</junit-jupiter.version>
-        <mockito.version>2.24.0</mockito.version>
+		<junit-jupiter.version>5.3.2</junit-jupiter.version>
+		<mockito.version>2.24.0</mockito.version>
 	</properties>
 
 	<dependencies>
@@ -59,13 +59,25 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-  <!-- junit 5 -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <scope>test</scope>
-        </dependency>
-
+		<!-- junit 5 -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- Swagger for Api documentation -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.8.0</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.8.0</version>
+			<scope>compile</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
